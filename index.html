@@ -287,6 +287,7 @@
   }
   .stay-info dt { font-size: 13px; color: var(--ink-soft); }
   .stay-info dd { margin: 0; }
+  .stay-info .map-link { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
   .field { display: block; margin-top: 8px; }
   .field span { display: block; font-size: 12px; color: var(--ink-soft); margin-bottom: 2px; }
   .field input {
@@ -720,10 +721,11 @@
       { time: '15:45', title: '妹妹・星羽：成田 → 桃園', desc: '國泰 CX451，成田第 2 航廈出發，18:25 抵達', tags: ['plane'], fam: 'mojin' },
       { time: '19:00', title: 'Toyota 租車還車（琴似）', desc: '還車前記得加滿油', tags: ['car'] },
       { time: '19:00 後', title: '凱文：琴似 → 新千歲機場', desc: '搭 JR 到札幌轉快速 Airport，約 1 小時', tags: ['train'] },
-      { time: '21:00', title: '凱文：新千歲 → 羽田', desc: 'ANA NH4738，22:40 抵達第 2 航廈', tags: ['plane'] }
-    ], tip: '時間很緊：19:00 在琴似還車，到新千歲機場大約要 1 小時，抵達時離 21:00 起飛不到 1 小時。建議凱文先搭車去機場、由其他人還車，或把還車時間提早。凱文隔天 09:20 從羽田出發，住羽田附近最方便。' },
+      { time: '21:00', title: '凱文：新千歲 → 羽田', desc: 'ANA NH4738，22:40 抵達第 2 航廈', tags: ['plane'] },
+      { time: '23:00 後', title: '凱文入住 First Cabin 第1航廈', desc: '從第 2 航廈走到第 1 航廈，晚上 11 點後入住', tags: ['hotel'] }
+    ], tip: '時間很緊：19:00 在琴似還車，到新千歲機場大約要 1 小時，抵達時離 21:00 起飛不到 1 小時。建議凱文先搭車去機場、由其他人還車，或把還車時間提早。' },
     { date: '2027-01-27', wd: '三', area: 'hokkaido', title: '凱文回台灣', who: '凱文・Ann・Owen', items: [
-      { time: '09:20', title: '凱文：羽田 → 松山', desc: 'ANA NH851，12:30 抵達', tags: ['plane'] },
+      { time: '09:20', title: '凱文：羽田 → 松山', desc: 'ANA NH851，12:30 抵達；從 First Cabin 走回第 2 航廈報到', tags: ['plane'] },
       { ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' },
       { time: '14:30', title: '小白・Remi：成田 → 桃園', desc: '華航 CI101，成田第 2 航廈出發，17:10 抵達', tags: ['plane'], fam: 'axu' }
     ]},
@@ -847,7 +849,7 @@
     ['t11', '暖暖包、保濕乳液、護唇膏', '滑雪'],
     ['t12', '御茶水滑雪街購物清單', '滑雪'],
     ['t13', '確認北海道住宿', '住宿'],
-    ['t14', '1/26 凱文羽田周邊住宿', '住宿'],
+    ['t14', '1/26 凱文羽田住宿（已訂 First Cabin 第1航廈）', '住宿'],
     ['t15', '1/30 Ann・Owen 東京住宿、成田→羽田交通', '住宿']
   ];
   const CAT_BG = { '證件': 'var(--coral-l)', '錢': 'var(--yellow-l)', '3C': 'var(--mizu-l)', '交通': 'var(--green-l)', '滑雪': 'var(--mizu)', '住宿': 'var(--yellow)', '自訂': 'var(--cream)' };
@@ -906,7 +908,15 @@
       ['類型', '溫泉飯店'],
       ['地點', '札幌・定山溪溫泉']
     ]},
-    { id: 's4', area: 'tokyo', title: '東京・羽田周邊', from: '2027-01-26', to: '2027-01-27', who: '凱文', note: '22:40 抵達羽田，隔天 09:20 起飛' },
+    { id: 's4', area: 'tokyo', title: '羽田機場・First Cabin 第1航廈', from: '2027-01-26', to: '2027-01-27', who: '凱文', note: '22:40 抵達羽田第 2 航廈，走到第 1 航廈入住；隔天 09:20 從第 2 航廈起飛', info: [
+      ['類型', '膠囊旅館（頭等艙・男性樓層）'],
+      ['地點', '羽田機場第 1 航廈內'],
+      ['入住', '1/26（二）23:00 後（晚上 11 點入住方案）'],
+      ['退房', '1/27（三）早上'],
+      ['付款', '¥7,838，現場付款'],
+      ['取消', '1/23 23:59 前可免費取消'],
+      ['地圖', '<a class="map-link" href="https://www.google.co.jp/maps/place/%E3%83%95%E3%82%A1%E3%83%BC%E3%82%B9%E3%83%88%E3%82%AD%E3%83%A3%E3%83%93%E3%83%B3+%E7%BE%BD%E7%94%B0%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB1/@35.5486624,139.7846231,17z/data=!4m9!3m8!1s0x601863f76e5d3673:0xbd51dbc6b6aaf6b1!5m2!4m1!1i2!8m2!3d35.54881!4d139.7838385?hl=ja" target="_blank" rel="noopener">Google 地圖 ↗</a>']
+    ]},
     { id: 's5', area: 'tokyo', title: '東京・羽田周邊', from: '2027-01-30', to: '2027-01-31', who: 'Ann・Owen', note: '14:30 抵達成田，隔天 09:20 從羽田起飛' }
   ];
   const stayData = store.get('ski.stays', {});
