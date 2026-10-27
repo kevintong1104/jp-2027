@@ -826,8 +826,10 @@
       b.classList.toggle('on', on);
       b.setAttribute('aria-selected', String(on));
     });
+    // 把選到的日期捲到中間（用畫面位置算，電腦版置中排版才不會跑掉）
     const btn = strip.querySelector(`[data-i="${i}"]`);
-    strip.scrollTo({ left: btn.offsetLeft - strip.clientWidth / 2 + btn.clientWidth / 2, behavior: root.classList.contains('motion') ? 'smooth' : 'auto' });
+    const offset = btn.getBoundingClientRect().left - strip.getBoundingClientRect().left;
+    strip.scrollTo({ left: strip.scrollLeft + offset - (strip.clientWidth - btn.clientWidth) / 2, behavior: root.classList.contains('motion') ? 'smooth' : 'auto' });
 
     const list = d.items.filter(forFam);
     if (!list.length) list.push({ time: '', title: `這天還沒有${FAM[dayFam].name}的行程`, desc: '有安排再補上', tags: [], empty: true });
