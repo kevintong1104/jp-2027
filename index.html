@@ -111,7 +111,11 @@
   .cd-msg {
     border: var(--line); border-radius: var(--r-md); padding: 14px; background: var(--yellow-l); font-size: 20px;
   }
-  .hero-members { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .families { display: grid; gap: 8px; margin: 16px auto 0; text-align: left; font-size: 14px; max-width: 360px; }
+  .fam { display: flex; gap: 8px; align-items: center; }
+  .fam .chip { flex: none; }
+  .fam .ppl { display: flex; flex-wrap: wrap; column-gap: 12px; }
+  .fam .ppl span { white-space: nowrap; }
   .chip {
     display: inline-flex; align-items: center; gap: 4px;
     font-size: 13px; padding: 1px 10px;
@@ -143,6 +147,13 @@
   .flight-mid { display: flex; flex-direction: column; align-items: center; min-width: 70px; }
   .flight-mid svg { width: 56px; height: 28px; }
   .flight-mid .dur { font-size: 12px; color: var(--ink-soft); }
+  .flight-who { padding: 0 16px 12px; font-size: 14px; color: var(--ink-soft); }
+  .port .time.tbd { font-size: 14px; color: var(--ink-soft); }
+  .fam-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .fam-btn {
+    cursor: pointer; padding: 3px 14px; border: 2.5px solid var(--ink); border-radius: 999px; background: var(--white);
+  }
+  .fam-btn.on { background: var(--c); box-shadow: 0 3px 0 var(--ink); }
   .flight.past { opacity: .55; }
   .flight.past .flight-top::after { content: "已完成"; font-size: 12px; margin-left: 6px; }
 
@@ -429,10 +440,10 @@
         <h1>日本滑雪之旅</h1>
         <p class="route">東京 → 越後湯澤 → 北海道｜1/15 – 1/31</p>
         <div id="countdown" aria-live="polite"></div>
-        <div class="hero-members">
-          <span class="chip">凱文 1/15–1/27</span>
-          <span class="chip">Ann 1/15–1/31</span>
-          <span class="chip">Owen 1/15–1/31</span>
+        <div class="families">
+          <div class="fam"><span class="chip" style="background:var(--coral-l)">凱文家</span><span class="ppl"><span>凱文 1/15–1/27</span><span>Ann、Owen 1/15–1/31</span></span></div>
+          <div class="fam"><span class="chip" style="background:var(--mizu)">魔人家</span><span class="ppl"><span>魔人 1/15–1/24</span><span>妹妹、星羽 1/15–1/26</span></span></div>
+          <div class="fam"><span class="chip" style="background:var(--green)">阿續家</span><span class="ppl"><span>阿續 1/16–1/23</span><span>小白、Remi 1/16–1/27</span></span></div>
         </div>
         <button class="motion-toggle" id="motionToggle" type="button"></button>
       </div>
@@ -445,6 +456,7 @@
       <span class="ico" style="background:var(--mizu-l)"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 18 L28 9 a2.5 2.5 0 0 1 1 4.5 L8 22Z" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/><path d="M14 15 L10 6 H14 L21 13Z M15 19 L13 27 H17 L21 17Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/></svg></span>
       航班與車票
     </h2>
+    <div class="fam-filter" id="famFilter" role="group" aria-label="依家庭篩選航班"></div>
     <div class="flights" id="flightList"></div>
     <div class="rails" id="railList"></div>
   </section>
@@ -537,6 +549,20 @@
     hokkaido: { name: '北海道', bg: 'var(--green-l)', dot: 'var(--green)' },
     home: { name: '回台灣', bg: 'var(--yellow-l)', dot: 'var(--yellow)' }
   };
+  const FAM = {
+    kevin: { name: '凱文家', c: 'var(--coral-l)' },
+    mojin: { name: '魔人家', c: 'var(--mizu)' },
+    axu: { name: '阿續家', c: 'var(--green)' }
+  };
+  // 魔人家、阿續家在日本的日期（含頭尾），用來在每日行程顯示誰也在
+  const MEMBERS = [
+    { fam: 'mojin', name: '魔人', from: '2027-01-15', to: '2027-01-24' },
+    { fam: 'mojin', name: '妹妹', from: '2027-01-15', to: '2027-01-26' },
+    { fam: 'mojin', name: '星羽', from: '2027-01-15', to: '2027-01-26' },
+    { fam: 'axu', name: '阿續', from: '2027-01-16', to: '2027-01-23' },
+    { fam: 'axu', name: '小白', from: '2027-01-16', to: '2027-01-27' },
+    { fam: 'axu', name: 'Remi', from: '2027-01-16', to: '2027-01-27' }
+  ];
   const TAGS = {
     plane: { t: '飛機', c: 'var(--mizu)' },
     shinkansen: { t: '新幹線', c: 'var(--yellow)' },
@@ -549,14 +575,22 @@
   };
 
   /* ---------- 航班 / 車票 ---------- */
+  // 時間留空 = 待確認
   const FLIGHTS = [
-    { date: '2027-01-15', wd: '五', no: 'NH854', who: '全員', from: ['TSA', '台北松山', '16:50'], to: ['HND', '東京羽田', '20:40'], tz: [8, 9] },
-    { date: '2027-01-22', wd: '五', no: 'NH079', who: '全員', from: ['HND', '羽田 第2航廈', '20:00'], to: ['CTS', '新千歲', '21:35'], tz: [9, 9] },
-    { date: '2027-01-26', wd: '二', no: 'NH4738', who: '凱文', from: ['CTS', '新千歲', '21:00'], to: ['HND', '羽田 第2航廈', '22:40'], tz: [9, 9] },
-    { date: '2027-01-27', wd: '三', no: 'NH851', who: '凱文', from: ['HND', '羽田 第2航廈', '09:20'], to: ['TSA', '台北松山', '12:30'], tz: [9, 8] },
-    { date: '2027-01-30', wd: '六', no: 'NH2152', who: 'Ann・Owen', from: ['CTS', '新千歲', '12:40'], to: ['NRT', '成田 第1航廈', '14:30'], tz: [9, 9] },
-    { date: '2027-01-31', wd: '日', no: 'NH851', who: 'Ann・Owen', from: ['HND', '羽田 第2航廈', '09:20'], to: ['TSA', '台北松山', '12:30'], tz: [9, 8] }
+    { date: '2027-01-15', wd: '五', fam: 'kevin', air: 'ANA', no: 'NH854', who: '凱文・Ann・Owen', from: ['TSA', '台北松山', '16:50'], to: ['HND', '東京羽田', '20:40'], tz: [8, 9] },
+    { date: '2027-01-15', wd: '五', fam: 'mojin', air: '國泰', no: 'CX450', who: '魔人・妹妹・星羽', from: ['TPE', '桃園', ''], to: ['NRT', '東京成田', ''], tz: [8, 9] },
+    { date: '2027-01-16', wd: '六', fam: 'axu', air: '華航', no: 'CI222', who: '阿續・小白・Remi', from: ['TSA', '台北松山', ''], to: ['HND', '東京羽田', ''], tz: [8, 9] },
+    { date: '2027-01-22', wd: '五', fam: 'kevin', air: 'ANA', no: 'NH079', who: '凱文・Ann・Owen', from: ['HND', '羽田 第2航廈', '20:00'], to: ['CTS', '新千歲', '21:35'], tz: [9, 9] },
+    { date: '2027-01-23', wd: '六', fam: 'axu', air: '華航', no: 'CI221', who: '阿續', from: ['HND', '東京羽田', ''], to: ['TSA', '台北松山', ''], tz: [9, 8] },
+    { date: '2027-01-24', wd: '日', fam: 'mojin', air: '', no: '', who: '魔人', from: ['？', '出發地待補', ''], to: ['TW', '台灣', ''], tz: [9, 8] },
+    { date: '2027-01-26', wd: '二', fam: 'kevin', air: 'ANA', no: 'NH4738', who: '凱文', from: ['CTS', '新千歲', '21:00'], to: ['HND', '羽田 第2航廈', '22:40'], tz: [9, 9] },
+    { date: '2027-01-26', wd: '二', fam: 'mojin', air: '國泰', no: 'CX451', who: '妹妹・星羽', from: ['NRT', '東京成田', ''], to: ['TPE', '桃園', ''], tz: [9, 8] },
+    { date: '2027-01-27', wd: '三', fam: 'kevin', air: 'ANA', no: 'NH851', who: '凱文', from: ['HND', '羽田 第2航廈', '09:20'], to: ['TSA', '台北松山', '12:30'], tz: [9, 8] },
+    { date: '2027-01-27', wd: '三', fam: 'axu', air: '華航', no: 'CI101', who: '小白・Remi', from: ['NRT', '東京成田', ''], to: ['TPE', '桃園', ''], tz: [9, 8] },
+    { date: '2027-01-30', wd: '六', fam: 'kevin', air: 'ANA', no: 'NH2152', who: 'Ann・Owen', from: ['CTS', '新千歲', '12:40'], to: ['NRT', '成田 第1航廈', '14:30'], tz: [9, 9] },
+    { date: '2027-01-31', wd: '日', fam: 'kevin', air: 'ANA', no: 'NH851', who: 'Ann・Owen', from: ['HND', '羽田 第2航廈', '09:20'], to: ['TSA', '台北松山', '12:30'], tz: [9, 8] }
   ];
+  let flightFam = 'all';
   const RAILS = [
     { date: '1/17（日）', no: '車次 335', route: '上野 17:38 → 越後湯澤 18:45' },
     { date: '1/22（五）', no: '車次 320', route: '越後湯澤 13:13 → 東京 14:28' }
@@ -566,82 +600,111 @@
 
   function renderFlights() {
     const now = Date.now();
-    $('#flightList').innerHTML = FLIGHTS.map(f => {
-      const dep = toMs(f.date, f.from[2], f.tz[0]);
-      const arr = toMs(f.date, f.to[2], f.tz[1]);
-      const mins = Math.round((arr - dep) / 60000);
-      const dur = `${Math.floor(mins / 60)}h${pad(mins % 60)}m`;
-      const whoBg = f.who === '全員' ? 'var(--green)' : f.who === '凱文' ? 'var(--yellow)' : 'var(--coral-l)';
+    const timeHtml = t => t ? `<div class="time">${t}</div>` : '<div class="time tbd">時間待確認</div>';
+    $('#flightList').innerHTML = FLIGHTS.filter(f => flightFam === 'all' || f.fam === flightFam).map(f => {
+      const timed = f.from[2] && f.to[2];
+      const arr = timed ? toMs(f.date, f.to[2], f.tz[1]) : Date.parse(`${f.date}T23:59:00+09:00`);
+      let dur = '';
+      if (timed) {
+        const mins = Math.round((arr - toMs(f.date, f.from[2], f.tz[0])) / 60000);
+        dur = `${Math.floor(mins / 60)}h${pad(mins % 60)}m`;
+      }
+      const fam = FAM[f.fam];
       return `
       <article class="card flight${arr < now ? ' past' : ''}">
         <div class="flight-top" style="background:var(--mizu-l)">
           <span class="date">${md(f.date)}（${f.wd}）</span>
-          <span class="chip" style="background:${whoBg}">${f.who}</span>
-          <span class="no">ANA ${f.no}</span>
+          <span class="chip" style="background:${fam.c}">${fam.name}</span>
+          <span class="no">${f.no ? `${f.air} ${f.no}` : '航班待補'}</span>
         </div>
         <div class="flight-main">
-          <div class="port"><div class="code">${f.from[0]}</div><div class="name">${f.from[1]}</div><div class="time">${f.from[2]}</div></div>
+          <div class="port"><div class="code">${f.from[0]}</div><div class="name">${f.from[1]}</div>${timeHtml(f.from[2])}</div>
           <div class="flight-mid">
             <svg viewBox="0 0 56 28" aria-hidden="true"><path d="M2 20 H54" stroke="#3E3A39" stroke-width="2.5" stroke-dasharray="4 4"/><g transform="translate(16 4)"><path d="M0 10 L22 3 a2 2 0 0 1 1 4 L4 14Z" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2.2" stroke-linejoin="round"/><path d="M10 8 L7 0 H10 L16 6Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2" stroke-linejoin="round"/></g></svg>
             <span class="dur">${dur}</span>
           </div>
-          <div class="port to"><div class="code">${f.to[0]}</div><div class="name">${f.to[1]}</div><div class="time">${f.to[2]}</div></div>
+          <div class="port to"><div class="code">${f.to[0]}</div><div class="name">${f.to[1]}</div>${timeHtml(f.to[2])}</div>
         </div>
+        <div class="flight-who">搭乘：${f.who}</div>
       </article>`;
     }).join('');
-    $('#railList').innerHTML = RAILS.map(r => `
+    const showRails = flightFam === 'all' || flightFam === 'kevin';
+    $('#railList').innerHTML = !showRails ? '' : RAILS.map(r => `
       <div class="card rail">
         <svg viewBox="0 0 52 30" aria-hidden="true"><path d="M2 6 Q2 3 5 3 H34 Q46 4 50 22 H2Z" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/><path d="M2 16 H48" stroke="#A8D3E6" stroke-width="3.5"/><path d="M38 6 Q44 8 46 13 H38Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2" stroke-linejoin="round"/><path d="M0 27 H52" stroke="#3E3A39" stroke-width="2.5"/></svg>
-        <div><div class="r-main">${r.date} JR 新幹線・${r.no}</div><div class="r-sub">${r.route}｜車票已訂</div></div>
+        <div><div class="r-main">${r.date} JR 新幹線・${r.no}</div><div class="r-sub">${r.route}｜凱文家・車票已訂</div></div>
       </div>`).join('');
   }
+  const famFilter = $('#famFilter');
+  famFilter.innerHTML = [['all', '全部', 'var(--yellow)'], ...Object.entries(FAM).map(([k, v]) => [k, v.name, v.c])]
+    .map(([k, n, c]) => `<button type="button" class="fam-btn${k === 'all' ? ' on' : ''}" data-fam="${k}" style="--c:${c}" aria-pressed="${k === 'all'}">${n}</button>`).join('');
+  famFilter.addEventListener('click', e => {
+    const b = e.target.closest('.fam-btn');
+    if (!b) return;
+    flightFam = b.dataset.fam;
+    famFilter.querySelectorAll('.fam-btn').forEach(x => {
+      x.classList.toggle('on', x === b);
+      x.setAttribute('aria-pressed', String(x === b));
+    });
+    renderFlights();
+  });
 
   /* ---------- 每日行程 ---------- */
   const PLAN_LATER = { time: '全天', title: '北海道自由行', desc: '行程規劃中，想好再補上', tags: ['free'], empty: true };
   const DAYS = [
-    { date: '2027-01-15', wd: '五', area: 'tokyo', title: '出發！飛往東京', who: '全員', items: [
+    { date: '2027-01-15', wd: '五', area: 'tokyo', title: '出發！飛往東京', who: '凱文・Ann・Owen', items: [
       { time: '14:50', title: '松山機場報到', desc: '起飛前 2 小時到機場，護照記得帶', tags: ['plane'] },
       { time: '16:50', title: '松山 → 羽田', desc: 'ANA NH854，20:40 抵達', tags: ['plane'] },
-      { time: '20:40', title: '抵達羽田，前往住宿', desc: '入境後搭電車進市區', tags: ['train', 'hotel'] }
+      { time: '20:40', title: '抵達羽田，前往住宿', desc: '入境後搭電車進市區', tags: ['train', 'hotel'] },
+      { time: '時間待確認', title: '魔人家：桃園 → 成田', desc: '國泰 CX450・魔人、妹妹、星羽', tags: ['plane'], fam: 'mojin' }
     ]},
-    { date: '2027-01-16', wd: '六', area: 'tokyo', title: '池袋・御茶水滑雪街', who: '全員', items: [
+    { date: '2027-01-16', wd: '六', area: 'tokyo', title: '池袋・御茶水滑雪街', who: '凱文・Ann・Owen', items: [
+      { time: '時間待確認', title: '阿續家：松山 → 羽田', desc: '華航 CI222・阿續、小白、Remi', tags: ['plane'], fam: 'axu' },
       { time: '上午', title: '池袋', desc: '池袋散策', tags: ['train'] },
       { time: '下午', title: '御茶水滑雪街', desc: '神保町～御茶水一帶滑雪用品店林立，補齊雪具', tags: ['shop', 'train'], must: true }
     ]},
-    { date: '2027-01-17', wd: '日', area: 'yuzawa', title: '前往越後湯澤', who: '全員', items: [
+    { date: '2027-01-17', wd: '日', area: 'yuzawa', title: '前往越後湯澤', who: '凱文・Ann・Owen', items: [
       { time: '出發前', title: '拿歐文的雪鞋', desc: '青達西口（已付款）', tags: ['shop'] },
       { time: '17:38', title: '上野 → 越後湯澤', desc: 'JR 新幹線 車次 335，車票已訂', tags: ['shinkansen'] },
       { time: '18:45', title: '抵達越後湯澤', desc: '入住，整理明天的雪具', tags: ['hotel'] }
     ], tip: '上野站搭新幹線，記得預留時間拿行李與雪具。' },
-    { date: '2027-01-18', wd: '一', area: 'yuzawa', title: '岩原滑雪場', who: '全員', items: [
+    { date: '2027-01-18', wd: '一', area: 'yuzawa', title: '岩原滑雪場', who: '凱文・Ann・Owen', items: [
       { time: '全天', title: '岩原滑雪場', desc: '寬廣好滑的雪道', tags: ['ski'], must: true },
       { time: '課程', title: '歐文滑雪課 第 1 天', desc: '已付一半訂金', tags: ['lesson'] }
     ]},
-    { date: '2027-01-19', wd: '二', area: 'yuzawa', title: '岩原滑雪場', who: '全員', items: [
+    { date: '2027-01-19', wd: '二', area: 'yuzawa', title: '岩原滑雪場', who: '凱文・Ann・Owen', items: [
       { time: '全天', title: '岩原滑雪場', desc: '再戰岩原！', tags: ['ski'], must: true },
       { time: '課程', title: '歐文滑雪課 第 2 天', desc: '已付一半訂金，確認尾款', tags: ['lesson'] }
     ]},
-    { date: '2027-01-20', wd: '三', area: 'yuzawa', title: '神立滑雪場', who: '全員', items: [
+    { date: '2027-01-20', wd: '三', area: 'yuzawa', title: '神立滑雪場', who: '凱文・Ann・Owen', items: [
       { time: '全天', title: '神立滑雪場', desc: '', tags: ['ski'], must: true }
     ]},
-    { date: '2027-01-21', wd: '四', area: 'yuzawa', title: '神立 或 石打丸山', who: '全員', items: [
+    { date: '2027-01-21', wd: '四', area: 'yuzawa', title: '神立 或 石打丸山', who: '凱文・Ann・Owen', items: [
       { time: '全天', title: '神立 或 石打丸山', desc: '看雪況和體力再決定', tags: ['ski'] }
     ]},
-    { date: '2027-01-22', wd: '五', area: 'hokkaido', title: '回東京，飛北海道', who: '全員', items: [
+    { date: '2027-01-22', wd: '五', area: 'hokkaido', title: '回東京，飛北海道', who: '凱文・Ann・Owen', items: [
       { time: '13:13', title: '越後湯澤 → 東京', desc: 'JR 新幹線 車次 320，14:28 抵達', tags: ['shinkansen'] },
       { time: '14:28', title: '東京 → 羽田機場', desc: '前往羽田 第 2 航廈', tags: ['train'] },
       { time: '20:00', title: '羽田 → 新千歲', desc: 'ANA NH079，21:35 抵達', tags: ['plane'] }
     ], tip: '雪具要託運，搭機前確認行李重量。' },
-    { date: '2027-01-23', wd: '六', area: 'hokkaido', title: '北海道', who: '全員', items: [PLAN_LATER] },
-    { date: '2027-01-24', wd: '日', area: 'hokkaido', title: '北海道', who: '全員', items: [PLAN_LATER] },
-    { date: '2027-01-25', wd: '一', area: 'hokkaido', title: '北海道', who: '全員', items: [PLAN_LATER] },
-    { date: '2027-01-26', wd: '二', area: 'hokkaido', title: '凱文先飛東京', who: '全員', items: [
+    { date: '2027-01-23', wd: '六', area: 'hokkaido', title: '北海道', who: '凱文・Ann・Owen', items: [
+      PLAN_LATER,
+      { time: '時間待確認', title: '阿續：羽田 → 松山', desc: '華航 CI221', tags: ['plane'], fam: 'axu' }
+    ]},
+    { date: '2027-01-24', wd: '日', area: 'hokkaido', title: '北海道', who: '凱文・Ann・Owen', items: [
+      PLAN_LATER,
+      { time: '時間待確認', title: '魔人先回台灣', desc: '航班待補', tags: ['plane'], fam: 'mojin' }
+    ]},
+    { date: '2027-01-25', wd: '一', area: 'hokkaido', title: '北海道', who: '凱文・Ann・Owen', items: [PLAN_LATER] },
+    { date: '2027-01-26', wd: '二', area: 'hokkaido', title: '凱文先飛東京', who: '凱文・Ann・Owen', items: [
       { ...PLAN_LATER, time: '白天' },
-      { time: '21:00', title: '凱文：新千歲 → 羽田', desc: 'ANA NH4738，22:40 抵達第 2 航廈', tags: ['plane'] }
+      { time: '21:00', title: '凱文：新千歲 → 羽田', desc: 'ANA NH4738，22:40 抵達第 2 航廈', tags: ['plane'] },
+      { time: '時間待確認', title: '妹妹・星羽：成田 → 桃園', desc: '國泰 CX451', tags: ['plane'], fam: 'mojin' }
     ], tip: '凱文隔天 09:20 從羽田出發，住羽田附近最方便。' },
     { date: '2027-01-27', wd: '三', area: 'hokkaido', title: '凱文回台灣', who: '凱文・Ann・Owen', items: [
       { time: '09:20', title: '凱文：羽田 → 松山', desc: 'ANA NH851，12:30 抵達', tags: ['plane'] },
-      { ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' }
+      { ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' },
+      { time: '時間待確認', title: '小白・Remi：成田 → 桃園', desc: '華航 CI101', tags: ['plane'], fam: 'axu' }
     ]},
     { date: '2027-01-28', wd: '四', area: 'hokkaido', title: '北海道', who: 'Ann・Owen', items: [{ ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' }] },
     { date: '2027-01-29', wd: '五', area: 'hokkaido', title: '北海道', who: 'Ann・Owen', items: [{ ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' }] },
@@ -687,9 +750,13 @@
           <div class="tl-time">${esc(it.time)}</div>
           <p class="tl-title">${esc(it.title)}</p>
           ${it.desc ? `<p class="tl-desc">${esc(it.desc)}</p>` : ''}
-          ${it.tags.length ? `<div class="tl-tags">${it.tags.map(t => `<span class="tag" style="background:${TAGS[t].c}">${TAGS[t].t}</span>`).join('')}</div>` : ''}
+          ${it.tags.length || it.fam ? `<div class="tl-tags">${it.fam ? `<span class="tag" style="background:${FAM[it.fam].c}">${FAM[it.fam].name}</span>` : ''}${it.tags.map(t => `<span class="tag" style="background:${TAGS[t].c}">${TAGS[t].t}</span>`).join('')}</div>` : ''}
         </div>
       </li>`).join('');
+
+    const here = {};
+    MEMBERS.filter(m => m.from <= d.date && d.date <= m.to).forEach(m => (here[m.fam] = here[m.fam] || []).push(m.name));
+    const others = Object.entries(here).map(([k, names]) => `<span class="chip" style="background:${FAM[k].c}">${FAM[k].name}：${names.join('・')}</span>`).join('');
 
     $('#dayPanel').setAttribute('aria-labelledby', `dayTab${i}`);
     $('#dayPanel').innerHTML = `
@@ -698,7 +765,7 @@
         <div class="meta">
           <div class="num">Day ${i + 1}・${md(d.date)}（${d.wd}）</div>
           <h3>${esc(d.title)}</h3>
-          <div class="chips"><span class="chip" style="background:${a.bg}">${a.name}</span><span class="chip">${esc(d.who)}</span></div>
+          <div class="chips"><span class="chip" style="background:${a.bg}">${a.name}</span><span class="chip" style="background:${FAM.kevin.c}">${FAM.kevin.name}：${esc(d.who)}</span>${others}</div>
         </div>
       </div>
       <ol class="timeline">${items}</ol>
@@ -799,8 +866,8 @@
 
   /* ---------- 住宿 ---------- */
   const STAYS = [
-    { id: 's1', area: 'tokyo', title: '東京', from: '2027-01-15', to: '2027-01-17', who: '全員', note: '1/15 晚上抵達羽田，1/17 從上野搭新幹線' },
-    { id: 's2', area: 'yuzawa', title: '越後湯澤', from: '2027-01-17', to: '2027-01-22', who: '全員', note: '岩原、神立、石打丸山都在附近' },
+    { id: 's1', area: 'tokyo', title: '東京', from: '2027-01-15', to: '2027-01-17', who: '凱文・Ann・Owen', note: '1/15 晚上抵達羽田，1/17 從上野搭新幹線' },
+    { id: 's2', area: 'yuzawa', title: '越後湯澤', from: '2027-01-17', to: '2027-01-22', who: '凱文・Ann・Owen', note: '岩原、神立、石打丸山都在附近' },
     { id: 's3', area: 'hokkaido', title: '北海道', from: '2027-01-22', to: '2027-01-30', who: '全員（凱文住到 1/26）', note: '1/22 21:35 抵達新千歲' },
     { id: 's4', area: 'tokyo', title: '東京・羽田周邊', from: '2027-01-26', to: '2027-01-27', who: '凱文', note: '22:40 抵達羽田，隔天 09:20 起飛' },
     { id: 's5', area: 'tokyo', title: '東京・羽田周邊', from: '2027-01-30', to: '2027-01-31', who: 'Ann・Owen', note: '14:30 抵達成田，隔天 09:20 從羽田起飛' }
