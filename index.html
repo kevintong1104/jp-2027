@@ -575,18 +575,18 @@
   };
 
   /* ---------- 航班 / 車票 ---------- */
-  // 時間留空 = 待確認
+  // 時間留空 = 待確認；est = 依目前班表推估，以機票為準
   const FLIGHTS = [
+    { date: '2027-01-15', wd: '五', fam: 'mojin', air: '國泰', no: 'CX450', who: '魔人・妹妹・星羽', from: ['TPE', '桃園 第1航廈', '13:00'], to: ['NRT', '成田 第2航廈', '17:15'], tz: [8, 9], est: true },
     { date: '2027-01-15', wd: '五', fam: 'kevin', air: 'ANA', no: 'NH854', who: '凱文・Ann・Owen', from: ['TSA', '台北松山', '16:50'], to: ['HND', '東京羽田', '20:40'], tz: [8, 9] },
-    { date: '2027-01-15', wd: '五', fam: 'mojin', air: '國泰', no: 'CX450', who: '魔人・妹妹・星羽', from: ['TPE', '桃園', ''], to: ['NRT', '東京成田', ''], tz: [8, 9] },
-    { date: '2027-01-16', wd: '六', fam: 'axu', air: '華航', no: 'CI222', who: '阿續・小白・Remi', from: ['TSA', '台北松山', ''], to: ['HND', '東京羽田', ''], tz: [8, 9] },
+    { date: '2027-01-16', wd: '六', fam: 'axu', air: '華航', no: 'CI222', who: '阿續・小白・Remi', from: ['TSA', '台北松山', '18:05'], to: ['HND', '羽田 第3航廈', '22:05'], tz: [8, 9], est: true },
     { date: '2027-01-22', wd: '五', fam: 'kevin', air: 'ANA', no: 'NH079', who: '凱文・Ann・Owen', from: ['HND', '羽田 第2航廈', '20:00'], to: ['CTS', '新千歲', '21:35'], tz: [9, 9] },
-    { date: '2027-01-23', wd: '六', fam: 'axu', air: '華航', no: 'CI221', who: '阿續', from: ['HND', '東京羽田', ''], to: ['TSA', '台北松山', ''], tz: [9, 8] },
-    { date: '2027-01-24', wd: '日', fam: 'mojin', air: '', no: '', who: '魔人', from: ['？', '出發地待補', ''], to: ['TW', '台灣', ''], tz: [9, 8] },
+    { date: '2027-01-23', wd: '六', fam: 'axu', air: '華航', no: 'CI221', who: '阿續', from: ['HND', '羽田 第3航廈', '14:30'], to: ['TSA', '台北松山', '16:55'], tz: [9, 8], est: true },
+    { date: '2027-01-24', wd: '日', fam: 'mojin', air: '國泰', no: 'CX451', who: '魔人', from: ['NRT', '成田 第2航廈', '15:45'], to: ['TPE', '桃園 第1航廈', '18:25'], tz: [9, 8], est: true },
+    { date: '2027-01-26', wd: '二', fam: 'mojin', air: '國泰', no: 'CX451', who: '妹妹・星羽', from: ['NRT', '成田 第2航廈', '15:45'], to: ['TPE', '桃園 第1航廈', '18:25'], tz: [9, 8], est: true },
     { date: '2027-01-26', wd: '二', fam: 'kevin', air: 'ANA', no: 'NH4738', who: '凱文', from: ['CTS', '新千歲', '21:00'], to: ['HND', '羽田 第2航廈', '22:40'], tz: [9, 9] },
-    { date: '2027-01-26', wd: '二', fam: 'mojin', air: '國泰', no: 'CX451', who: '妹妹・星羽', from: ['NRT', '東京成田', ''], to: ['TPE', '桃園', ''], tz: [9, 8] },
     { date: '2027-01-27', wd: '三', fam: 'kevin', air: 'ANA', no: 'NH851', who: '凱文', from: ['HND', '羽田 第2航廈', '09:20'], to: ['TSA', '台北松山', '12:30'], tz: [9, 8] },
-    { date: '2027-01-27', wd: '三', fam: 'axu', air: '華航', no: 'CI101', who: '小白・Remi', from: ['NRT', '東京成田', ''], to: ['TPE', '桃園', ''], tz: [9, 8] },
+    { date: '2027-01-27', wd: '三', fam: 'axu', air: '華航', no: 'CI101', who: '小白・Remi', from: ['NRT', '成田 第2航廈', '14:30'], to: ['TPE', '桃園 第2航廈', '17:10'], tz: [9, 8], est: true },
     { date: '2027-01-30', wd: '六', fam: 'kevin', air: 'ANA', no: 'NH2152', who: 'Ann・Owen', from: ['CTS', '新千歲', '12:40'], to: ['NRT', '成田 第1航廈', '14:30'], tz: [9, 9] },
     { date: '2027-01-31', wd: '日', fam: 'kevin', air: 'ANA', no: 'NH851', who: 'Ann・Owen', from: ['HND', '羽田 第2航廈', '09:20'], to: ['TSA', '台北松山', '12:30'], tz: [9, 8] }
   ];
@@ -625,7 +625,7 @@
           </div>
           <div class="port to"><div class="code">${f.to[0]}</div><div class="name">${f.to[1]}</div>${timeHtml(f.to[2])}</div>
         </div>
-        <div class="flight-who">搭乘：${f.who}</div>
+        <div class="flight-who">搭乘：${f.who}${f.est ? '<br>時間依目前班表，以機票為準' : ''}</div>
       </article>`;
     }).join('');
     const showRails = flightFam === 'all' || flightFam === 'kevin';
@@ -653,15 +653,15 @@
   const PLAN_LATER = { time: '全天', title: '北海道自由行', desc: '行程規劃中，想好再補上', tags: ['free'], empty: true };
   const DAYS = [
     { date: '2027-01-15', wd: '五', area: 'tokyo', title: '出發！飛往東京', who: '凱文・Ann・Owen', items: [
+      { time: '13:00', title: '魔人家：桃園 → 成田', desc: '國泰 CX450，17:15 抵達成田第 2 航廈', tags: ['plane'], fam: 'mojin' },
       { time: '14:50', title: '松山機場報到', desc: '起飛前 2 小時到機場，護照記得帶', tags: ['plane'] },
       { time: '16:50', title: '松山 → 羽田', desc: 'ANA NH854，20:40 抵達', tags: ['plane'] },
-      { time: '20:40', title: '抵達羽田，前往住宿', desc: '入境後搭電車進市區', tags: ['train', 'hotel'] },
-      { time: '時間待確認', title: '魔人家：桃園 → 成田', desc: '國泰 CX450・魔人、妹妹、星羽', tags: ['plane'], fam: 'mojin' }
+      { time: '20:40', title: '抵達羽田，前往住宿', desc: '入境後搭電車進市區', tags: ['train', 'hotel'] }
     ]},
     { date: '2027-01-16', wd: '六', area: 'tokyo', title: '池袋・御茶水滑雪街', who: '凱文・Ann・Owen', items: [
-      { time: '時間待確認', title: '阿續家：松山 → 羽田', desc: '華航 CI222・阿續、小白、Remi', tags: ['plane'], fam: 'axu' },
       { time: '上午', title: '池袋', desc: '池袋散策', tags: ['train'] },
-      { time: '下午', title: '御茶水滑雪街', desc: '神保町～御茶水一帶滑雪用品店林立，補齊雪具', tags: ['shop', 'train'], must: true }
+      { time: '下午', title: '御茶水滑雪街', desc: '神保町～御茶水一帶滑雪用品店林立，補齊雪具', tags: ['shop', 'train'], must: true },
+      { time: '18:05', title: '阿續家：松山 → 羽田', desc: '華航 CI222，22:05 抵達羽田第 3 航廈', tags: ['plane'], fam: 'axu' }
     ]},
     { date: '2027-01-17', wd: '日', area: 'yuzawa', title: '前往越後湯澤', who: '凱文・Ann・Owen', items: [
       { time: '出發前', title: '拿歐文的雪鞋', desc: '青達西口（已付款）', tags: ['shop'] },
@@ -689,22 +689,22 @@
     ], tip: '雪具要託運，搭機前確認行李重量。' },
     { date: '2027-01-23', wd: '六', area: 'hokkaido', title: '北海道', who: '凱文・Ann・Owen', items: [
       PLAN_LATER,
-      { time: '時間待確認', title: '阿續：羽田 → 松山', desc: '華航 CI221', tags: ['plane'], fam: 'axu' }
+      { time: '14:30', title: '阿續：羽田 → 松山', desc: '華航 CI221，羽田第 3 航廈出發，16:55 抵達', tags: ['plane'], fam: 'axu' }
     ]},
     { date: '2027-01-24', wd: '日', area: 'hokkaido', title: '北海道', who: '凱文・Ann・Owen', items: [
       PLAN_LATER,
-      { time: '時間待確認', title: '魔人先回台灣', desc: '航班待補', tags: ['plane'], fam: 'mojin' }
+      { time: '15:45', title: '魔人先回台：成田 → 桃園', desc: '國泰 CX451，成田第 2 航廈出發，18:25 抵達', tags: ['plane'], fam: 'mojin' }
     ]},
     { date: '2027-01-25', wd: '一', area: 'hokkaido', title: '北海道', who: '凱文・Ann・Owen', items: [PLAN_LATER] },
     { date: '2027-01-26', wd: '二', area: 'hokkaido', title: '凱文先飛東京', who: '凱文・Ann・Owen', items: [
       { ...PLAN_LATER, time: '白天' },
-      { time: '21:00', title: '凱文：新千歲 → 羽田', desc: 'ANA NH4738，22:40 抵達第 2 航廈', tags: ['plane'] },
-      { time: '時間待確認', title: '妹妹・星羽：成田 → 桃園', desc: '國泰 CX451', tags: ['plane'], fam: 'mojin' }
+      { time: '15:45', title: '妹妹・星羽：成田 → 桃園', desc: '國泰 CX451，成田第 2 航廈出發，18:25 抵達', tags: ['plane'], fam: 'mojin' },
+      { time: '21:00', title: '凱文：新千歲 → 羽田', desc: 'ANA NH4738，22:40 抵達第 2 航廈', tags: ['plane'] }
     ], tip: '凱文隔天 09:20 從羽田出發，住羽田附近最方便。' },
     { date: '2027-01-27', wd: '三', area: 'hokkaido', title: '凱文回台灣', who: '凱文・Ann・Owen', items: [
       { time: '09:20', title: '凱文：羽田 → 松山', desc: 'ANA NH851，12:30 抵達', tags: ['plane'] },
       { ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' },
-      { time: '時間待確認', title: '小白・Remi：成田 → 桃園', desc: '華航 CI101', tags: ['plane'], fam: 'axu' }
+      { time: '14:30', title: '小白・Remi：成田 → 桃園', desc: '華航 CI101，成田第 2 航廈出發，17:10 抵達', tags: ['plane'], fam: 'axu' }
     ]},
     { date: '2027-01-28', wd: '四', area: 'hokkaido', title: '北海道', who: 'Ann・Owen', items: [{ ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' }] },
     { date: '2027-01-29', wd: '五', area: 'hokkaido', title: '北海道', who: 'Ann・Owen', items: [{ ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' }] },
