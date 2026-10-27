@@ -664,7 +664,7 @@
   const PLAN_LATER = { time: '全天', title: '北海道自由行', desc: '行程規劃中，想好再補上', tags: ['free'], empty: true };
   const DAYS = [
     { date: '2027-01-15', wd: '五', area: 'tokyo', title: '出發！飛往東京', who: '凱文・Ann・Owen', items: [
-      { time: '13:00', title: '星羽家：桃園 → 成田', desc: '國泰 CX450，17:15 抵達成田第 2 航廈', tags: ['plane'], fam: 'mojin' },
+      { time: '13:00', title: '星羽家：桃園 → 成田', desc: '國泰 CX450，17:15 抵達成田第 2 航廈，之後到上野入住同一間飯店', tags: ['plane'], fam: 'mojin' },
       { time: '14:50', title: '松山機場報到', desc: '起飛前 2 小時到機場，護照記得帶', tags: ['plane'] },
       { time: '16:50', title: '松山 → 羽田', desc: 'ANA NH854，20:40 抵達', tags: ['plane'] },
       { time: '20:40', title: '抵達羽田，前往上野住宿', desc: '入境後搭電車到 JR 上野站，入住 JR上野入谷口超級飯店', tags: ['train', 'hotel'] }
@@ -892,9 +892,10 @@
 
   /* ---------- 住宿 ---------- */
   const STAYS = [
-    { id: 's1', area: 'tokyo', title: '東京・JR上野入谷口超級飯店', from: '2027-01-15', to: '2027-01-17', who: '凱文・Ann・Owen', note: '1/15 晚上抵達羽田，1/17 從上野搭新幹線', info: [
+    { id: 's1', area: 'tokyo', title: '東京・JR上野入谷口超級飯店', from: '2027-01-15', to: '2027-01-17', who: '歐文家・星羽家', note: '1/15 歐文家晚上到羽田、星羽家傍晚到成田；1/17 一起從上野搭新幹線', info: [
       ['類型', '商務飯店（Super Hotel）'],
       ['地點', 'JR 上野站入谷口附近'],
+      ['地圖', '<a class="map-link" href="https://maps.app.goo.gl/Pa7pMv9cjrxNkVCNA" target="_blank" rel="noopener">Google 地圖 ↗</a>'],
       ['訂房', '<a class="map-link" href="https://www.agoda.com/sp/9pNydtJsXLl" target="_blank" rel="noopener">Agoda 頁面 ↗</a>']
     ]},
     { id: 's2', area: 'yuzawa', title: '越後湯澤・Airbnb', from: '2027-01-17', to: '2027-01-22', who: '三家一起（歐文家・星羽家・Remi家）', note: '岩原、神立、石打丸山都在附近', info: [
