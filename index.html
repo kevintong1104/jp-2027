@@ -642,7 +642,7 @@
       </div>`).join('') + (flightFam === 'all' || flightFam === 'kevin' ? `
       <div class="card rail" style="background:var(--green-l)">
         <svg viewBox="0 0 52 30" aria-hidden="true"><path d="M4 21 V15 Q4 12 8 11 L14 5 Q16 3 19 3 H33 Q36 3 38 5 L44 11 Q48 12 48 15 V21Z" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/><path d="M16 11 L19 6 H25 V11Z M28 11 V6 H33 L37 11Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2" stroke-linejoin="round"/><circle cx="14" cy="22" r="4.5" fill="#3E3A39"/><circle cx="38" cy="22" r="4.5" fill="#3E3A39"/></svg>
-        <div><div class="r-main">北海道 Toyota 租車・歐文家</div><div class="r-sub">1/23（六）09:00 取車 → 1/26（二）19:00 還車</div></div>
+        <div><div class="r-main">北海道 Toyota 租車・歐文家</div><div class="r-sub">1/23（六）09:00 琴似取車 → 1/26（二）19:00 琴似還車</div></div>
       </div>` : '');
   }
   const famFilter = $('#famFilter');
@@ -700,7 +700,7 @@
       { time: '21:35', title: '抵達新千歲，回琴似的家', desc: '', tags: ['train', 'hotel'] }
     ], tip: '10:00 退房後到 13:13 搭車前，可以先把行李寄放在越後湯澤站的置物櫃。雪具要託運，搭機前確認行李重量。' },
     { date: '2027-01-23', wd: '六', area: 'hokkaido', title: '北海道・租車取車', who: '凱文・Ann・Owen', items: [
-      { time: '09:00', title: 'Toyota 租車取車', desc: '租到 1/26（二）19:00；記得帶台灣駕照日文譯本和護照', tags: ['car'] },
+      { time: '09:00', title: 'Toyota 租車取車（琴似）', desc: '租到 1/26（二）19:00；記得帶台灣駕照日文譯本和護照', tags: ['car'] },
       { ...PLAN_LATER, time: '白天' },
       { time: '14:30', title: '阿續：羽田 → 松山', desc: '華航 CI221，羽田第 3 航廈出發，16:55 抵達', tags: ['plane'], fam: 'axu' }
     ]},
@@ -718,9 +718,10 @@
     { date: '2027-01-26', wd: '二', area: 'hokkaido', title: '凱文先飛東京', who: '凱文・Ann・Owen', items: [
       { ...PLAN_LATER, time: '白天' },
       { time: '15:45', title: '妹妹・星羽：成田 → 桃園', desc: '國泰 CX451，成田第 2 航廈出發，18:25 抵達', tags: ['plane'], fam: 'mojin' },
-      { time: '19:00', title: 'Toyota 租車還車', desc: '還車前記得加滿油', tags: ['car'] },
+      { time: '19:00', title: 'Toyota 租車還車（琴似）', desc: '還車前記得加滿油', tags: ['car'] },
+      { time: '19:00 後', title: '凱文：琴似 → 新千歲機場', desc: '搭 JR 到札幌轉快速 Airport，約 1 小時', tags: ['train'] },
       { time: '21:00', title: '凱文：新千歲 → 羽田', desc: 'ANA NH4738，22:40 抵達第 2 航廈', tags: ['plane'] }
-    ], tip: '19:00 還車、21:00 起飛，時間有點緊：如果還車地點不在新千歲機場，記得預留去機場的時間。凱文隔天 09:20 從羽田出發，住羽田附近最方便。' },
+    ], tip: '時間很緊：19:00 在琴似還車，到新千歲機場大約要 1 小時，抵達時離 21:00 起飛不到 1 小時。建議凱文先搭車去機場、由其他人還車，或把還車時間提早。凱文隔天 09:20 從羽田出發，住羽田附近最方便。' },
     { date: '2027-01-27', wd: '三', area: 'hokkaido', title: '凱文回台灣', who: '凱文・Ann・Owen', items: [
       { time: '09:20', title: '凱文：羽田 → 松山', desc: 'ANA NH851，12:30 抵達', tags: ['plane'] },
       { ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' },
