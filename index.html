@@ -170,6 +170,9 @@
     scroll-snap-type: x proximity; scrollbar-width: none;
   }
   .day-strip::-webkit-scrollbar { display: none; }
+  @media (pointer: fine) { .day-strip { cursor: grab; } }
+  .day-strip.dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+  .day-strip.dragging .day-btn { cursor: grabbing; }
   .day-btn {
     flex: none; scroll-snap-align: center;
     width: 58px; padding: 6px 0 4px; text-align: center; cursor: pointer;
@@ -777,6 +780,38 @@
     const b = e.target.closest('.day-btn');
     if (b) showDay(+b.dataset.i);
   });
+  // 電腦版：滑鼠拖曳、滾輪也能左右捲動日期
+  let drag = null, justDragged = false;
+  // 拖曳結束時不要順便點到日期
+  strip.addEventListener('click', e => { if (justDragged) { e.stopPropagation(); e.preventDefault(); } }, true);
+  strip.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' && e.button === 0) drag = { id: e.pointerId, x: e.clientX, left: strip.scrollLeft, moved: false };
+  });
+  strip.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.x;
+    if (!drag.moved && Math.abs(dx) < 5) return;
+    if (!drag.moved) { drag.moved = true; strip.classList.add('dragging'); strip.setPointerCapture(e.pointerId); }
+    strip.scrollLeft = drag.left - dx;
+  });
+  const endDrag = e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    if (drag.moved) {
+      strip.classList.remove('dragging');
+      justDragged = true;
+      setTimeout(() => { justDragged = false; }, 0);
+    }
+    drag = null;
+  };
+  strip.addEventListener('pointerup', endDrag);
+  strip.addEventListener('pointercancel', endDrag);
+  strip.addEventListener('wheel', e => {
+    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+    const max = strip.scrollWidth - strip.clientWidth;
+    if ((e.deltaY < 0 && strip.scrollLeft <= 0) || (e.deltaY > 0 && strip.scrollLeft >= max - 1)) return;
+    e.preventDefault();
+    strip.scrollLeft += e.deltaY;
+  }, { passive: false });
 
   function showDay(i) {
     cur = i;
