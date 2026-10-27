@@ -734,8 +734,8 @@
     { date: '2027-01-29', wd: '五', area: 'hokkaido', title: '北海道', who: 'Ann・Owen', items: [{ ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' }] },
     { date: '2027-01-30', wd: '六', area: 'tokyo', title: 'Ann・Owen 飛東京', who: 'Ann・Owen', items: [
       { time: '12:40', title: '新千歲 → 成田', desc: 'ANA NH2152，14:30 抵達第 1 航廈', tags: ['plane'] },
-      { time: '傍晚', title: '移動到羽田附近住宿', desc: '隔天早上從羽田出發', tags: ['train', 'hotel'] }
-    ], tip: '抵達成田、隔天從羽田起飛，兩個機場不同，記得預留移動時間。' },
+      { time: '傍晚', title: '移動到高輪 入住東急Stay高輪', desc: '從成田搭電車到泉岳寺／品川一帶', tags: ['train', 'hotel'] }
+    ], tip: '抵達成田、隔天從羽田起飛，兩個機場不同。高輪在成田和羽田之間，隔天搭京急線到羽田約 20–30 分鐘，09:20 的國際線建議 07:00 前到機場。' },
     { date: '2027-01-31', wd: '日', area: 'home', title: '回家囉', who: 'Ann・Owen', items: [
       { time: '09:20', title: '羽田 → 松山', desc: 'ANA NH851，12:30 抵達', tags: ['plane'] }
     ]}
@@ -852,7 +852,7 @@
     ['t12', '御茶水滑雪街購物清單', '滑雪'],
     ['t13', '確認北海道住宿', '住宿'],
     ['t14', '1/26 凱文羽田住宿（已訂 First Cabin 第1航廈）', '住宿'],
-    ['t15', '1/30 Ann・Owen 東京住宿、成田→羽田交通', '住宿']
+    ['t15', '1/30 Ann・Owen 東京住宿（已訂東急Stay高輪）、成田→高輪→羽田交通', '住宿']
   ];
   const CAT_BG = { '證件': 'var(--coral-l)', '錢': 'var(--yellow-l)', '3C': 'var(--mizu-l)', '交通': 'var(--green-l)', '滑雪': 'var(--mizu)', '住宿': 'var(--yellow)', '自訂': 'var(--cream)' };
   let todos = store.get('ski.todos', null) || TODO_DEFAULT.map(([id, text, cat]) => ({ id, text, cat, done: false }));
@@ -930,7 +930,11 @@
       ['取消', '1/23 23:59 前可免費取消'],
       ['地圖', '<a class="map-link" href="https://www.google.co.jp/maps/place/%E3%83%95%E3%82%A1%E3%83%BC%E3%82%B9%E3%83%88%E3%82%AD%E3%83%A3%E3%83%93%E3%83%B3+%E7%BE%BD%E7%94%B0%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB1/@35.5486624,139.7846231,17z/data=!4m9!3m8!1s0x601863f76e5d3673:0xbd51dbc6b6aaf6b1!5m2!4m1!1i2!8m2!3d35.54881!4d139.7838385?hl=ja" target="_blank" rel="noopener">Google 地圖 ↗</a>']
     ]},
-    { id: 's5', area: 'tokyo', title: '東京・羽田周邊', from: '2027-01-30', to: '2027-01-31', who: 'Ann・Owen', note: '14:30 抵達成田，隔天 09:20 從羽田起飛' }
+    { id: 's5', area: 'tokyo', title: '東京・東急Stay高輪', from: '2027-01-30', to: '2027-01-31', who: 'Ann・Owen', note: '14:30 抵達成田，隔天 09:20 從羽田起飛', info: [
+      ['類型', '飯店（東急Stay）'],
+      ['地點', '東京・港區高輪 2-16-29'],
+      ['地圖', '<a class="map-link" href="https://maps.app.goo.gl/yM58qb6FD4A88Qv76" target="_blank" rel="noopener">Google 地圖 ↗</a>']
+    ]}
   ];
   const stayData = store.get('ski.stays', {});
   const FIELDS = [['name', '飯店名稱'], ['addr', '地址'], ['ref', '訂房編號 / 電話']];
