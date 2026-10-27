@@ -634,11 +634,10 @@
         <div class="flight-who">搭乘：${f.who}${f.est ? '<br>時間依目前班表，以機票為準' : ''}</div>
       </article>`;
     }).join('');
-    const showRails = flightFam === 'all' || flightFam === 'kevin';
-    $('#railList').innerHTML = !showRails ? '' : RAILS.map(r => `
+    $('#railList').innerHTML = RAILS.map(r => `
       <div class="card rail">
         <svg viewBox="0 0 52 30" aria-hidden="true"><path d="M2 6 Q2 3 5 3 H34 Q46 4 50 22 H2Z" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/><path d="M2 16 H48" stroke="#A8D3E6" stroke-width="3.5"/><path d="M38 6 Q44 8 46 13 H38Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2" stroke-linejoin="round"/><path d="M0 27 H52" stroke="#3E3A39" stroke-width="2.5"/></svg>
-        <div><div class="r-main">${r.date} JR 新幹線・${r.no}</div><div class="r-sub">${r.route}｜歐文家・車票已訂</div></div>
+        <div><div class="r-main">${r.date} JR 新幹線・${r.no}</div><div class="r-sub">${r.route}｜三家來回車票都已訂</div></div>
       </div>`).join('');
   }
   const famFilter = $('#famFilter');
@@ -671,26 +670,26 @@
     ]},
     { date: '2027-01-17', wd: '日', area: 'yuzawa', title: '前往越後湯澤', who: '凱文・Ann・Owen', items: [
       { time: '出發前', title: '拿歐文的雪鞋', desc: '青達西口（已付款）', tags: ['shop'] },
-      { time: '17:38', title: '上野 → 越後湯澤', desc: 'JR 新幹線 車次 335，車票已訂', tags: ['shinkansen'] },
+      { time: '17:38', title: '上野 → 越後湯澤', desc: 'JR 新幹線 車次 335，三家車票都已訂', tags: ['shinkansen'] },
       { time: '18:45', title: '抵達越後湯澤，入住 Airbnb', desc: '房東 Mo，15:00 後可入住；整理明天的雪具', tags: ['hotel'] }
     ], tip: '上野站搭新幹線，記得預留時間拿行李與雪具。' },
     { date: '2027-01-18', wd: '一', area: 'yuzawa', title: '岩原滑雪場', who: '凱文・Ann・Owen', items: [
-      { time: '全天', title: '岩原滑雪場', desc: '寬廣好滑的雪道', tags: ['ski'], must: true },
+      { time: '全天', title: '岩原滑雪場', desc: '三家早鳥雪票都已買好', tags: ['ski'], must: true },
       { time: '課程', title: '歐文滑雪課 第 1 天', desc: '已付一半訂金', tags: ['lesson'] }
     ]},
     { date: '2027-01-19', wd: '二', area: 'yuzawa', title: '岩原滑雪場', who: '凱文・Ann・Owen', items: [
-      { time: '全天', title: '岩原滑雪場', desc: '再戰岩原！', tags: ['ski'], must: true },
+      { time: '全天', title: '岩原滑雪場', desc: '再戰岩原！三家早鳥雪票都已買好', tags: ['ski'], must: true },
       { time: '課程', title: '歐文滑雪課 第 2 天', desc: '已付一半訂金，確認尾款', tags: ['lesson'] }
     ]},
     { date: '2027-01-20', wd: '三', area: 'yuzawa', title: '神立滑雪場', who: '凱文・Ann・Owen', items: [
-      { time: '全天', title: '神立滑雪場', desc: '', tags: ['ski'], must: true }
+      { time: '全天', title: '神立滑雪場', desc: '歐文家早鳥雪票已買好', tags: ['ski'], must: true }
     ]},
     { date: '2027-01-21', wd: '四', area: 'yuzawa', title: '神立 或 石打丸山', who: '凱文・Ann・Owen', items: [
       { time: '全天', title: '神立 或 石打丸山', desc: '看雪況和體力再決定', tags: ['ski'] }
     ]},
     { date: '2027-01-22', wd: '五', area: 'hokkaido', title: '回東京，飛北海道', who: '凱文・Ann・Owen', items: [
       { time: '10:00', title: 'Airbnb 退房', desc: '10:00 前退房，到 13:13 搭車前還有時間', tags: ['hotel'] },
-      { time: '13:13', title: '越後湯澤 → 東京', desc: 'JR 新幹線 車次 320，14:28 抵達', tags: ['shinkansen'] },
+      { time: '13:13', title: '越後湯澤 → 東京', desc: 'JR 新幹線 車次 320，14:28 抵達，三家車票都已訂', tags: ['shinkansen'] },
       { time: '14:28', title: '東京 → 羽田機場', desc: '前往羽田 第 2 航廈', tags: ['train'] },
       { time: '20:00', title: '羽田 → 新千歲', desc: 'ANA NH079，21:35 抵達', tags: ['plane'] }
     ], tip: '10:00 退房後到 13:13 搭車前，可以先把行李寄放在越後湯澤站的置物櫃。雪具要託運，搭機前確認行李重量。' },
