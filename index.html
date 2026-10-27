@@ -447,9 +447,9 @@
         <p class="route">東京 → 越後湯澤 → 北海道｜1/15 – 1/31</p>
         <div id="countdown" aria-live="polite"></div>
         <div class="families">
-          <div class="fam"><span class="chip" style="background:var(--coral-l)">凱文家</span><span class="ppl"><span>凱文 1/15–1/27</span><span>Ann、Owen 1/15–1/31</span></span></div>
-          <div class="fam"><span class="chip" style="background:var(--mizu)">魔人家</span><span class="ppl"><span>魔人 1/15–1/24</span><span>妹妹、星羽 1/15–1/26</span></span></div>
-          <div class="fam"><span class="chip" style="background:var(--green)">阿續家</span><span class="ppl"><span>阿續 1/16–1/23</span><span>小白、Remi 1/16–1/27</span></span></div>
+          <div class="fam"><span class="chip" style="background:var(--coral-l)">歐文家</span><span class="ppl"><span>凱文 1/15–1/27</span><span>Ann、Owen 1/15–1/31</span></span></div>
+          <div class="fam"><span class="chip" style="background:var(--mizu)">星羽家</span><span class="ppl"><span>魔人 1/15–1/24</span><span>妹妹、星羽 1/15–1/26</span></span></div>
+          <div class="fam"><span class="chip" style="background:var(--green)">Remi家</span><span class="ppl"><span>阿續 1/16–1/23</span><span>小白、Remi 1/16–1/27</span></span></div>
         </div>
         <button class="motion-toggle" id="motionToggle" type="button"></button>
       </div>
@@ -556,11 +556,11 @@
     home: { name: '回台灣', bg: 'var(--yellow-l)', dot: 'var(--yellow)' }
   };
   const FAM = {
-    kevin: { name: '凱文家', c: 'var(--coral-l)' },
-    mojin: { name: '魔人家', c: 'var(--mizu)' },
-    axu: { name: '阿續家', c: 'var(--green)' }
+    kevin: { name: '歐文家', c: 'var(--coral-l)' },
+    mojin: { name: '星羽家', c: 'var(--mizu)' },
+    axu: { name: 'Remi家', c: 'var(--green)' }
   };
-  // 魔人家、阿續家在日本的日期（含頭尾），用來在每日行程顯示誰也在
+  // 星羽家、Remi家在日本的日期（含頭尾），用來在每日行程顯示誰也在
   const MEMBERS = [
     { fam: 'mojin', name: '魔人', from: '2027-01-15', to: '2027-01-24' },
     { fam: 'mojin', name: '妹妹', from: '2027-01-15', to: '2027-01-26' },
@@ -638,7 +638,7 @@
     $('#railList').innerHTML = !showRails ? '' : RAILS.map(r => `
       <div class="card rail">
         <svg viewBox="0 0 52 30" aria-hidden="true"><path d="M2 6 Q2 3 5 3 H34 Q46 4 50 22 H2Z" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/><path d="M2 16 H48" stroke="#A8D3E6" stroke-width="3.5"/><path d="M38 6 Q44 8 46 13 H38Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2" stroke-linejoin="round"/><path d="M0 27 H52" stroke="#3E3A39" stroke-width="2.5"/></svg>
-        <div><div class="r-main">${r.date} JR 新幹線・${r.no}</div><div class="r-sub">${r.route}｜凱文家・車票已訂</div></div>
+        <div><div class="r-main">${r.date} JR 新幹線・${r.no}</div><div class="r-sub">${r.route}｜歐文家・車票已訂</div></div>
       </div>`).join('');
   }
   const famFilter = $('#famFilter');
@@ -659,7 +659,7 @@
   const PLAN_LATER = { time: '全天', title: '北海道自由行', desc: '行程規劃中，想好再補上', tags: ['free'], empty: true };
   const DAYS = [
     { date: '2027-01-15', wd: '五', area: 'tokyo', title: '出發！飛往東京', who: '凱文・Ann・Owen', items: [
-      { time: '13:00', title: '魔人家：桃園 → 成田', desc: '國泰 CX450，17:15 抵達成田第 2 航廈', tags: ['plane'], fam: 'mojin' },
+      { time: '13:00', title: '星羽家：桃園 → 成田', desc: '國泰 CX450，17:15 抵達成田第 2 航廈', tags: ['plane'], fam: 'mojin' },
       { time: '14:50', title: '松山機場報到', desc: '起飛前 2 小時到機場，護照記得帶', tags: ['plane'] },
       { time: '16:50', title: '松山 → 羽田', desc: 'ANA NH854，20:40 抵達', tags: ['plane'] },
       { time: '20:40', title: '抵達羽田，前往住宿', desc: '入境後搭電車進市區', tags: ['train', 'hotel'] }
@@ -667,7 +667,7 @@
     { date: '2027-01-16', wd: '六', area: 'tokyo', title: '池袋・御茶水滑雪街', who: '凱文・Ann・Owen', items: [
       { time: '上午', title: '池袋', desc: '池袋散策', tags: ['train'] },
       { time: '下午', title: '御茶水滑雪街', desc: '神保町～御茶水一帶滑雪用品店林立，補齊雪具', tags: ['shop', 'train'], must: true },
-      { time: '18:05', title: '阿續家：松山 → 羽田', desc: '華航 CI222，22:05 抵達羽田第 3 航廈', tags: ['plane'], fam: 'axu' }
+      { time: '18:05', title: 'Remi家：松山 → 羽田', desc: '華航 CI222，22:05 抵達羽田第 3 航廈', tags: ['plane'], fam: 'axu' }
     ]},
     { date: '2027-01-17', wd: '日', area: 'yuzawa', title: '前往越後湯澤', who: '凱文・Ann・Owen', items: [
       { time: '出發前', title: '拿歐文的雪鞋', desc: '青達西口（已付款）', tags: ['shop'] },
@@ -881,7 +881,7 @@
       ['入住', '1/17（日）15:00 後'],
       ['退房', '1/22（五）10:00 前']
     ]},
-    { id: 's3', area: 'hokkaido', title: '北海道', from: '2027-01-22', to: '2027-01-30', who: '凱文家（凱文住到 1/26）', note: '1/22 21:35 抵達新千歲' },
+    { id: 's3', area: 'hokkaido', title: '北海道', from: '2027-01-22', to: '2027-01-30', who: '歐文家（凱文住到 1/26）', note: '1/22 21:35 抵達新千歲' },
     { id: 's4', area: 'tokyo', title: '東京・羽田周邊', from: '2027-01-26', to: '2027-01-27', who: '凱文', note: '22:40 抵達羽田，隔天 09:20 起飛' },
     { id: 's5', area: 'tokyo', title: '東京・羽田周邊', from: '2027-01-30', to: '2027-01-31', who: 'Ann・Owen', note: '14:30 抵達成田，隔天 09:20 從羽田起飛' }
   ];
