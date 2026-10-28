@@ -836,9 +836,9 @@
         </div>
       </li>`).join('');
 
-    // 三家一起的日子只放一個「三家一起」，其他天列出當天在日本的家庭
+    // 三家一起的日子只放一個「三家一起」；滑雪前列出當天在日本的家庭，1/22 分開後只放歐文家
     const here = { kevin: [d.who] };
-    MEMBERS.filter(m => m.from <= d.date && d.date <= m.to).forEach(m => (here[m.fam] = here[m.fam] || []).push(m.name));
+    MEMBERS.filter(m => m.from <= d.date && d.date <= m.to && d.date < '2027-01-22').forEach(m => (here[m.fam] = here[m.fam] || []).push(m.name));
     const famChips = d.together ? '<span class="chip" style="background:var(--yellow)">三家一起</span>'
       : Object.entries(here).map(([k, names]) => `<span class="chip" style="background:${FAM[k].c}">${FAM[k].name}：${esc(names.join('・'))}</span>`).join('');
 
