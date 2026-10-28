@@ -671,8 +671,9 @@
   // 項目的 fam：沒寫 = 歐文家，'all' = 三家一起，其他 = 該家庭
   const PLAN_LATER = { time: '全天', title: '北海道自由行', desc: '行程規劃中，想好再補上', tags: ['free'], empty: true };
   const IN_TOKYO = { area: 'tokyo', title: '待在東京' };
-  const FOOD_LIST = 'https://maps.app.goo.gl/7zsawUZxHcNXwazR8';
-  const MEAL_TBD = { title: '待定', desc: '從北海道想吃清單挑，想吃成吉思汗（烤羊肉）', tags: ['food'], empty: true, link: FOOD_LIST };
+  // 北海道想吃：鐵板漢堡排 よしだや、成吉思汗烤羊肉
+  const YOSHIDAYA = 'https://maps.app.goo.gl/7zsawUZxHcNXwazR8';
+  const MEAL_TBD = { title: '待定', desc: '想吃：鐵板漢堡排 よしだや（狸小路附近）、成吉思汗烤羊肉', tags: ['food'], empty: true, link: YOSHIDAYA };
   const DAYS = [
     { date: '2027-01-15', wd: '五', area: 'tokyo', title: '出發！飛往東京', who: '凱文・Ann・Owen', items: [
       { time: '13:00', title: '星羽家：桃園 → 成田', desc: '國泰 CX450，17:15 抵達成田第 2 航廈，之後到上野入住同一間飯店', tags: ['plane'], fam: 'mojin' },
@@ -850,7 +851,7 @@
           ${it.time ? `<div class="tl-time">${esc(it.time)}</div>` : ''}
           <p class="tl-title">${esc(it.title)}</p>
           ${it.desc ? `<p class="tl-desc">${esc(it.desc)}</p>` : ''}
-          ${it.link ? `<p class="tl-desc"><a class="map-link" href="${it.link}" target="_blank" rel="noopener">北海道想吃清單 ↗</a></p>` : ''}
+          ${it.link ? `<p class="tl-desc"><a class="map-link" href="${it.link}" target="_blank" rel="noopener">よしだや 地圖 ↗</a></p>` : ''}
           ${it.tags.length || it.fam ? `<div class="tl-tags">${famTag(it.fam)}${it.tags.map(t => `<span class="tag" style="background:${TAGS[t].c}">${TAGS[t].t}</span>`).join('')}</div>` : ''}
         </div>
       </li>`).join('');
@@ -994,7 +995,7 @@
     { id: 's3', area: 'hokkaido', title: '北海道・琴似的家', from: '2027-01-22', to: '2027-01-30', who: '歐文家（凱文住到 1/26）', note: '1/22 21:35 抵達新千歲；1/24 晚上住定山溪', info: [
       ['類型', '自己的家'],
       ['地點', '札幌・琴似'],
-      ['想吃', `<a class="map-link" href="${FOOD_LIST}" target="_blank" rel="noopener">北海道想吃清單 ↗</a>`]
+      ['想吃', `鐵板漢堡排 よしだや（札幌南3西5，狸小路附近）<a class="map-link" href="${YOSHIDAYA}" target="_blank" rel="noopener">地圖 ↗</a><br>成吉思汗烤羊肉（店家待定）`]
     ]},
     { id: 's6', area: 'hokkaido', title: '定山溪・Hana Momiji Sapporo', from: '2027-01-24', to: '2027-01-25', who: '歐文家', note: '晚上可以散步去雪燈路，隔天自駕去札幌國際滑雪場', info: [
       ['類型', '溫泉飯店'],
