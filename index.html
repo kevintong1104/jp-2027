@@ -290,7 +290,7 @@
   }
   .stay-info dt { font-size: 13px; color: var(--ink-soft); }
   .stay-info dd { margin: 0; }
-  .stay-info .map-link { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+  .map-link { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
   .field { display: block; margin-top: 8px; }
   .field span { display: block; font-size: 12px; color: var(--ink-soft); margin-bottom: 2px; }
   .field input {
@@ -583,7 +583,8 @@
     shop: { t: '購物', c: 'var(--coral)' },
     hotel: { t: '住宿', c: 'var(--yellow-l)' },
     free: { t: '自由行', c: 'var(--cream)' },
-    car: { t: '開車', c: 'var(--green-l)' }
+    car: { t: '開車', c: 'var(--green-l)' },
+    food: { t: '美食', c: 'var(--yellow)' }
   };
 
   /* ---------- 航班 / 車票 ---------- */
@@ -647,7 +648,7 @@
       </div>`).join('') + (flightFam === 'all' || flightFam === 'kevin' ? `
       <div class="card rail" style="background:var(--green-l)">
         <svg viewBox="0 0 52 30" aria-hidden="true"><path d="M4 21 V15 Q4 12 8 11 L14 5 Q16 3 19 3 H33 Q36 3 38 5 L44 11 Q48 12 48 15 V21Z" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/><path d="M16 11 L19 6 H25 V11Z M28 11 V6 H33 L37 11Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2" stroke-linejoin="round"/><circle cx="14" cy="22" r="4.5" fill="#3E3A39"/><circle cx="38" cy="22" r="4.5" fill="#3E3A39"/></svg>
-        <div><div class="r-main">北海道 Toyota 租車・歐文家</div><div class="r-sub">1/23（六）09:00 琴似取車 → 1/26（二）19:00 琴似還車</div></div>
+        <div><div class="r-main">北海道 Toyota 租車・歐文家</div><div class="r-sub">1/23（六）09:00 琴似取車 → 1/26（二）18:00 琴似還車（預計）</div></div>
       </div>` : '');
   }
   // 「全部／三家」篩選按鈕，航班和每日行程共用
@@ -670,6 +671,8 @@
   // 項目的 fam：沒寫 = 歐文家，'all' = 三家一起，其他 = 該家庭
   const PLAN_LATER = { time: '全天', title: '北海道自由行', desc: '行程規劃中，想好再補上', tags: ['free'], empty: true };
   const IN_TOKYO = { area: 'tokyo', title: '待在東京' };
+  const FOOD_LIST = 'https://maps.app.goo.gl/7zsawUZxHcNXwazR8';
+  const MEAL_TBD = { title: '待定', desc: '從北海道想吃清單挑，想吃成吉思汗（烤羊肉）', tags: ['food'], empty: true, link: FOOD_LIST };
   const DAYS = [
     { date: '2027-01-15', wd: '五', area: 'tokyo', title: '出發！飛往東京', who: '凱文・Ann・Owen', items: [
       { time: '13:00', title: '星羽家：桃園 → 成田', desc: '國泰 CX450，17:15 抵達成田第 2 航廈，之後到上野入住同一間飯店', tags: ['plane'], fam: 'mojin' },
@@ -708,11 +711,13 @@
       { time: '14:28', title: '星羽家・Remi家 留在東京', desc: '不飛北海道；東京住宿和行程規劃中', tags: ['free'], fam: ['mojin', 'axu'] },
       { time: '14:28', title: '東京 → 羽田機場', desc: '前往羽田 第 2 航廈', tags: ['train'] },
       { time: '20:00', title: '羽田 → 新千歲', desc: 'ANA NH079，21:35 抵達', tags: ['plane'] },
-      { time: '21:35', title: '抵達新千歲，回琴似的家', desc: '', tags: ['train', 'hotel'] }
+      { time: '21:35', title: '抵達新千歲，回琴似的家', desc: '', tags: ['train', 'hotel'] },
+      { time: '回到家後', title: '晚餐：Sha la la 湯咖哩', desc: '琴似家附近；到家大約 23:00，先確認營業時間', tags: ['food'] }
     ], tip: '10:00 退房後到 13:13 搭車前，可以先把行李寄放在越後湯澤站的置物櫃。雪具要託運，搭機前確認行李重量。' },
     { date: '2027-01-23', wd: '六', area: 'hokkaido', title: '北海道・租車取車', who: '凱文・Ann・Owen', stay: IN_TOKYO, items: [
-      { time: '09:00', title: 'Toyota 租車取車（琴似）', desc: '租到 1/26（二）19:00；記得帶台灣駕照日文譯本和護照', tags: ['car'] },
+      { time: '09:00', title: 'Toyota 租車取車（琴似）', desc: '預計 1/26（二）18:00 還車；記得帶台灣駕照日文譯本和護照', tags: ['car'] },
       { ...PLAN_LATER, time: '白天' },
+      { ...MEAL_TBD, time: '午餐或晚餐', title: '午餐或晚餐：待定' },
       { time: '14:30', title: '阿續：羽田 → 松山', desc: '華航 CI221，羽田第 3 航廈出發，16:55 抵達', tags: ['plane'], fam: 'axu' }
     ]},
     { date: '2027-01-24', wd: '日', area: 'hokkaido', title: '札幌國際滑雪場・定山溪', who: '凱文・Ann・Owen', stay: IN_TOKYO, items: [
@@ -724,16 +729,19 @@
     { date: '2027-01-25', wd: '一', area: 'hokkaido', title: '札幌國際滑雪場', who: '凱文・Ann・Owen', stay: IN_TOKYO, items: [
       { time: '上午', title: 'Hana Momiji 退房', desc: '', tags: ['hotel'] },
       { time: '全天', title: '札幌國際滑雪場', desc: '從定山溪自駕過去', tags: ['ski', 'car'], must: true },
+      { ...MEAL_TBD, time: '晚上', title: '回札幌後晚餐：待定' },
       { time: '晚上', title: '回琴似的家', desc: '', tags: ['car', 'hotel'] }
     ]},
     { date: '2027-01-26', wd: '二', area: 'hokkaido', title: '凱文先飛東京', who: '凱文・Ann・Owen', stay: IN_TOKYO, items: [
       { ...PLAN_LATER, time: '白天' },
+      { ...MEAL_TBD, time: '午餐', title: '午餐：待定' },
       { time: '15:45', title: '妹妹・星羽：成田 → 桃園', desc: '國泰 CX451，成田第 2 航廈出發，18:25 抵達', tags: ['plane'], fam: 'mojin' },
-      { time: '19:00', title: 'Toyota 租車還車（琴似）', desc: '還車前記得加滿油', tags: ['car'] },
-      { time: '19:00 後', title: '凱文：琴似 → 新千歲機場', desc: '搭 JR 到札幌轉快速 Airport，約 1 小時', tags: ['train'] },
+      { time: '18:00 前', title: '先把行李載到 JR 車站', desc: '行李放車站後再去還車', tags: ['car'] },
+      { time: '18:00', title: 'Toyota 租車還車（琴似）', desc: '還車前記得加滿油', tags: ['car'] },
+      { time: '還車後', title: '凱文：琴似 → 新千歲機場', desc: '搭 JR 到札幌轉快速 Airport，約 1 小時', tags: ['train'] },
       { time: '21:00', title: '凱文：新千歲 → 羽田', desc: 'ANA NH4738，22:40 抵達第 2 航廈', tags: ['plane'] },
       { time: '23:00 後', title: '凱文入住 First Cabin 第1航廈', desc: '從第 2 航廈走到第 1 航廈，晚上 11 點後入住', tags: ['hotel'] }
-    ], tip: '時間很緊：19:00 在琴似還車，到新千歲機場大約要 1 小時，抵達時離 21:00 起飛不到 1 小時。建議凱文先搭車去機場、由其他人還車，或把還車時間提早。' },
+    ], tip: '18:00 還車後搭 JR 到新千歲大約 1 小時，19:15 左右到機場，離 21:00 起飛還有時間。還車前記得把行李先放到 JR 車站。' },
     { date: '2027-01-27', wd: '三', area: 'hokkaido', title: '凱文回台灣', who: '凱文・Ann・Owen', stay: IN_TOKYO, items: [
       { time: '09:20', title: '凱文：羽田 → 松山', desc: 'ANA NH851，12:30 抵達；從 First Cabin 走回第 2 航廈報到', tags: ['plane'] },
       { ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' },
@@ -842,6 +850,7 @@
           ${it.time ? `<div class="tl-time">${esc(it.time)}</div>` : ''}
           <p class="tl-title">${esc(it.title)}</p>
           ${it.desc ? `<p class="tl-desc">${esc(it.desc)}</p>` : ''}
+          ${it.link ? `<p class="tl-desc"><a class="map-link" href="${it.link}" target="_blank" rel="noopener">北海道想吃清單 ↗</a></p>` : ''}
           ${it.tags.length || it.fam ? `<div class="tl-tags">${famTag(it.fam)}${it.tags.map(t => `<span class="tag" style="background:${TAGS[t].c}">${TAGS[t].t}</span>`).join('')}</div>` : ''}
         </div>
       </li>`).join('');
@@ -984,7 +993,8 @@
     ]},
     { id: 's3', area: 'hokkaido', title: '北海道・琴似的家', from: '2027-01-22', to: '2027-01-30', who: '歐文家（凱文住到 1/26）', note: '1/22 21:35 抵達新千歲；1/24 晚上住定山溪', info: [
       ['類型', '自己的家'],
-      ['地點', '札幌・琴似']
+      ['地點', '札幌・琴似'],
+      ['想吃', `<a class="map-link" href="${FOOD_LIST}" target="_blank" rel="noopener">北海道想吃清單 ↗</a>`]
     ]},
     { id: 's6', area: 'hokkaido', title: '定山溪・Hana Momiji Sapporo', from: '2027-01-24', to: '2027-01-25', who: '歐文家', note: '晚上可以散步去雪燈路，隔天自駕去札幌國際滑雪場', info: [
       ['類型', '溫泉飯店'],
