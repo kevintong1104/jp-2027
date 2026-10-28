@@ -564,6 +564,15 @@
     mojin: { name: '星羽家', c: 'var(--coral-l)' },
     axu: { name: 'Remi家', c: 'var(--green)' }
   };
+  // 星羽家、Remi家在日本的日期（含頭尾），用來在每日行程顯示誰也在
+  const MEMBERS = [
+    { fam: 'mojin', name: '魔人', from: '2027-01-15', to: '2027-01-24' },
+    { fam: 'mojin', name: '妹妹', from: '2027-01-15', to: '2027-01-26' },
+    { fam: 'mojin', name: '星羽', from: '2027-01-15', to: '2027-01-26' },
+    { fam: 'axu', name: '阿續', from: '2027-01-16', to: '2027-01-23' },
+    { fam: 'axu', name: '小白', from: '2027-01-16', to: '2027-01-27' },
+    { fam: 'axu', name: 'Remi', from: '2027-01-16', to: '2027-01-27' }
+  ];
   const TAGS = {
     plane: { t: '飛機', c: 'var(--mizu)' },
     shinkansen: { t: '新幹線', c: 'var(--yellow)' },
@@ -658,45 +667,48 @@
   makeFamFilter($('#famFilter'), k => { flightFam = k; renderFlights(); });
 
   /* ---------- 每日行程 ---------- */
-  // 只放歐文家的行程；fam: 'all' = 三家一起（顯示黃色標籤）
+  // 項目的 fam：沒寫 = 歐文家，'all' = 三家一起，其他 = 該家庭；together = 這天三家一起
   const PLAN_LATER = { time: '全天', title: '北海道自由行', desc: '行程規劃中，想好再補上', tags: ['free'], empty: true };
   // 北海道想吃：鐵板漢堡排 よしだや、成吉思汗烤羊肉
   const YOSHIDAYA = 'https://maps.app.goo.gl/7zsawUZxHcNXwazR8';
   const MEAL_TBD = { title: '待定', desc: '想吃：鐵板漢堡排 よしだや（狸小路附近）、成吉思汗烤羊肉', tags: ['food'], empty: true, link: YOSHIDAYA };
   const DAYS = [
     { date: '2027-01-15', wd: '五', area: 'tokyo', title: '出發！飛往東京', who: '凱文・Ann・Owen', items: [
+      { time: '13:00', title: '星羽家：桃園 → 成田', desc: '國泰 CX450，17:15 抵達成田第 2 航廈，之後到上野入住同一間飯店', tags: ['plane'], fam: 'mojin' },
       { time: '14:50', title: '松山機場報到', desc: '起飛前 2 小時到機場，護照記得帶', tags: ['plane'] },
       { time: '16:50', title: '松山 → 羽田', desc: 'ANA NH854，20:40 抵達', tags: ['plane'] },
-      { time: '20:40', title: '抵達羽田，前往上野住宿', desc: '入境後搭電車到 JR 上野站，入住 JR上野入谷口超級飯店（星羽家也住同一間）', tags: ['train', 'hotel'] }
+      { time: '20:40', title: '抵達羽田，前往上野住宿', desc: '入境後搭電車到 JR 上野站，入住 JR上野入谷口超級飯店', tags: ['train', 'hotel'] }
     ]},
     { date: '2027-01-16', wd: '六', area: 'tokyo', title: '池袋・御茶水滑雪街', who: '凱文・Ann・Owen', items: [
       { time: '上午', title: '池袋', desc: '池袋散策', tags: ['train'] },
       { time: '下午', title: '御茶水滑雪街', desc: '神保町～御茶水一帶滑雪用品店林立，補齊雪具', tags: ['shop', 'train'], must: true },
-      { time: '當天', title: '雪具袋送到越後湯澤 Airbnb', desc: '房東代收，最好今天送到', tags: ['ski'] }
+      { time: '當天', title: '雪具袋送到越後湯澤 Airbnb', desc: '房東代收，最好今天送到', tags: ['ski'] },
+      { time: '18:05', title: 'Remi家：松山 → 羽田', desc: '華航 CI222，22:05 抵達羽田第 3 航廈', tags: ['plane'], fam: 'axu' }
     ]},
-    { date: '2027-01-17', wd: '日', area: 'yuzawa', title: '前往越後湯澤', who: '凱文・Ann・Owen', items: [
+    { date: '2027-01-17', wd: '日', area: 'yuzawa', title: '前往越後湯澤', who: '凱文・Ann・Owen', together: true, items: [
       { time: '17:38', title: '上野 → 越後湯澤', desc: 'JR 新幹線 車次 335，18:45 抵達，三家車票都已訂', tags: ['shinkansen'], fam: 'all' },
       { time: '18:30–20:00', title: '青達西口 拿雪具', desc: '已付款；18:45 到站後直接過去', tags: ['shop'] },
       { time: '拿完雪具', title: '入住 Airbnb', desc: '越後湯澤車站步行 7 分鐘；跟房東拿代收的雪具袋，整理明天的雪具', tags: ['hotel'], fam: 'all' }
     ], tip: '拿雪具的時間到 20:00，18:45 到站後先去青達西口，再走去 Airbnb。' },
-    { date: '2027-01-18', wd: '一', area: 'yuzawa', title: '岩原滑雪場', who: '凱文・Ann・Owen', items: [
+    { date: '2027-01-18', wd: '一', area: 'yuzawa', title: '岩原滑雪場', who: '凱文・Ann・Owen', together: true, items: [
       { time: '全天', title: '岩原滑雪場', desc: '三家早鳥雪票都已買好', tags: ['ski'], must: true, fam: 'all' },
       { time: '課程', title: '歐文滑雪課 第 1 天', desc: '已付一半訂金', tags: ['lesson'] }
     ]},
-    { date: '2027-01-19', wd: '二', area: 'yuzawa', title: '岩原滑雪場', who: '凱文・Ann・Owen', items: [
+    { date: '2027-01-19', wd: '二', area: 'yuzawa', title: '岩原滑雪場', who: '凱文・Ann・Owen', together: true, items: [
       { time: '全天', title: '岩原滑雪場', desc: '再戰岩原！三家早鳥雪票都已買好', tags: ['ski'], must: true, fam: 'all' },
       { time: '課程', title: '歐文滑雪課 第 2 天', desc: '已付一半訂金，確認尾款', tags: ['lesson'] }
     ]},
-    { date: '2027-01-20', wd: '三', area: 'yuzawa', title: '神立滑雪場', who: '凱文・Ann・Owen', items: [
+    { date: '2027-01-20', wd: '三', area: 'yuzawa', title: '神立滑雪場', who: '凱文・Ann・Owen', together: true, items: [
       { time: '全天', title: '神立滑雪場', desc: '歐文家早鳥雪票已買好', tags: ['ski'], must: true }
     ]},
-    { date: '2027-01-21', wd: '四', area: 'yuzawa', title: '神立 或 石打丸山', who: '凱文・Ann・Owen', items: [
+    { date: '2027-01-21', wd: '四', area: 'yuzawa', title: '神立 或 石打丸山', who: '凱文・Ann・Owen', together: true, items: [
       { time: '全天', title: '神立 或 石打丸山', desc: '看雪況和體力再決定', tags: ['ski'] }
     ]},
-    { date: '2027-01-22', wd: '五', area: 'hokkaido', title: '回東京，飛北海道', who: '凱文・Ann・Owen', items: [
+    { date: '2027-01-22', wd: '五', area: 'hokkaido', title: '回東京，飛北海道', who: '凱文・Ann・Owen', together: true, items: [
       { time: '10:00', title: 'Airbnb 退房', desc: '10:00 前退房，到 13:13 搭車前還有時間', tags: ['hotel'], fam: 'all' },
       { time: '13:13', title: '越後湯澤 → 東京', desc: 'JR 新幹線 車次 320，14:28 抵達，三家車票都已訂', tags: ['shinkansen'], fam: 'all' },
-      { time: '14:28', title: '東京 → 羽田機場', desc: '在東京站跟星羽家、Remi家分開，前往羽田 第 2 航廈', tags: ['train'] },
+      { time: '14:28', title: '星羽家・Remi家 留在東京', desc: '不飛北海道；東京住宿和行程規劃中', tags: ['free'], fam: ['mojin', 'axu'] },
+      { time: '14:28', title: '東京 → 羽田機場', desc: '前往羽田 第 2 航廈', tags: ['train'] },
       { time: '20:00', title: '羽田 → 新千歲', desc: 'ANA NH079，21:35 抵達', tags: ['plane'] },
       { time: '21:35', title: '抵達新千歲，回琴似的家', desc: '', tags: ['train', 'hotel'] },
       { time: '回到家後', title: '晚餐：Sha la la 湯咖哩', desc: '琴似家附近；到家大約 23:00，先確認營業時間', tags: ['food'] }
@@ -705,10 +717,12 @@
       { time: '09:00', title: 'Toyota 租車取車（琴似）', desc: '預計 1/26（二）18:00 還車；記得帶台灣駕照日文譯本和護照', tags: ['car'] },
       { time: '上午', title: '採買日常用品、羽絨被', desc: '租完車直接開車去買', tags: ['shop', 'car'] },
       { ...PLAN_LATER, time: '下午' },
-      { ...MEAL_TBD, time: '午餐或晚餐', title: '午餐或晚餐：待定' }
+      { ...MEAL_TBD, time: '午餐或晚餐', title: '午餐或晚餐：待定' },
+      { time: '14:30', title: '阿續：羽田 → 松山', desc: '華航 CI221，羽田第 3 航廈出發，16:55 抵達', tags: ['plane'], fam: 'axu' }
     ]},
     { date: '2027-01-24', wd: '日', area: 'hokkaido', title: '札幌國際滑雪場・定山溪', who: '凱文・Ann・Owen', items: [
       { time: '全天', title: '札幌國際滑雪場', desc: '自駕前往', tags: ['ski', 'car'], must: true },
+      { time: '15:45', title: '魔人先回台：成田 → 桃園', desc: '國泰 CX451，成田第 2 航廈出發，18:25 抵達', tags: ['plane'], fam: 'mojin' },
       { time: '傍晚', title: '入住 Hana Momiji Sapporo（定山溪）', desc: '定山溪溫泉住一晚', tags: ['car', 'hotel'] },
       { time: '晚上', title: '雪燈路', desc: '定山溪溫泉的雪燈夜景，散步過去', tags: ['free'], must: true }
     ], tip: '雪燈路是季節活動，舉辦日期和點燈時間以定山溪官方公告為準。' },
@@ -721,6 +735,7 @@
     { date: '2027-01-26', wd: '二', area: 'hokkaido', title: '凱文先飛東京', who: '凱文・Ann・Owen', items: [
       { ...PLAN_LATER, time: '白天' },
       { ...MEAL_TBD, time: '午餐', title: '午餐：待定' },
+      { time: '15:45', title: '妹妹・星羽：成田 → 桃園', desc: '國泰 CX451，成田第 2 航廈出發，18:25 抵達', tags: ['plane'], fam: 'mojin' },
       { time: '18:00 前', title: '先把行李載到 JR 車站', desc: '行李放車站後再去還車', tags: ['car'] },
       { time: '18:00', title: 'Toyota 租車還車（琴似）', desc: '還車前記得加滿油', tags: ['car'] },
       { time: '還車後', title: '凱文：琴似 → 新千歲機場', desc: '搭 JR 到札幌轉快速 Airport，約 1 小時', tags: ['train'] },
@@ -729,7 +744,8 @@
     ], tip: '18:00 還車後搭 JR 到新千歲大約 1 小時，19:15 左右到機場，離 21:00 起飛還有時間。還車前記得把行李先放到 JR 車站。' },
     { date: '2027-01-27', wd: '三', area: 'hokkaido', title: '凱文回台灣', who: '凱文・Ann・Owen', items: [
       { time: '09:20', title: '凱文：羽田 → 松山', desc: 'ANA NH851，12:30 抵達；從 First Cabin 走回第 2 航廈報到', tags: ['plane'] },
-      { ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' }
+      { ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' },
+      { time: '14:30', title: '小白・Remi：成田 → 桃園', desc: '華航 CI101，成田第 2 航廈出發，17:10 抵達', tags: ['plane'], fam: 'axu' }
     ]},
     { date: '2027-01-28', wd: '四', area: 'hokkaido', title: '北海道', who: 'Ann・Owen', items: [{ ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' }] },
     { date: '2027-01-29', wd: '五', area: 'hokkaido', title: '北海道', who: 'Ann・Owen', items: [{ ...PLAN_LATER, title: 'Ann・Owen 北海道自由行' }] },
@@ -804,6 +820,8 @@
     const offset = btn.getBoundingClientRect().left - strip.getBoundingClientRect().left;
     strip.scrollTo({ left: strip.scrollLeft + offset - (strip.clientWidth - btn.clientWidth) / 2, behavior: root.classList.contains('motion') ? 'smooth' : 'auto' });
 
+    const famTag = f => f === 'all' ? '<span class="tag" style="background:var(--yellow)">三家一起</span>'
+      : f ? [].concat(f).map(k => `<span class="tag" style="background:${FAM[k].c}">${FAM[k].name}</span>`).join('') : '';
     const items = d.items.map((it, k) => `
       <li class="tl-item bounce-in${it.empty ? ' empty' : ''}" style="--i:${k + 1};--dot:${it.tags[0] ? TAGS[it.tags[0]].c : a.dot}">
         <div class="card tl-card">
@@ -812,10 +830,15 @@
           <p class="tl-title">${esc(it.title)}</p>
           ${it.desc ? `<p class="tl-desc">${esc(it.desc)}</p>` : ''}
           ${it.link ? `<p class="tl-desc"><a class="map-link" href="${it.link}" target="_blank" rel="noopener">よしだや 地圖 ↗</a></p>` : ''}
-          ${it.tags.length || it.fam ? `<div class="tl-tags">${it.fam === 'all' ? '<span class="tag" style="background:var(--yellow)">三家一起</span>' : ''}${it.tags.map(t => `<span class="tag" style="background:${TAGS[t].c}">${TAGS[t].t}</span>`).join('')}</div>` : ''}
+          ${it.tags.length || it.fam ? `<div class="tl-tags">${famTag(it.fam)}${it.tags.map(t => `<span class="tag" style="background:${TAGS[t].c}">${TAGS[t].t}</span>`).join('')}</div>` : ''}
         </div>
       </li>`).join('');
 
+    // 三家一起的日子只放一個「三家一起」，其他天列出當天在日本的家庭
+    const here = { kevin: [d.who] };
+    MEMBERS.filter(m => m.from <= d.date && d.date <= m.to).forEach(m => (here[m.fam] = here[m.fam] || []).push(m.name));
+    const famChips = d.together ? '<span class="chip" style="background:var(--yellow)">三家一起</span>'
+      : Object.entries(here).map(([k, names]) => `<span class="chip" style="background:${FAM[k].c}">${FAM[k].name}：${esc(names.join('・'))}</span>`).join('');
 
     $('#dayPanel').setAttribute('aria-labelledby', `dayTab${i}`);
     $('#dayPanel').innerHTML = `
@@ -824,7 +847,7 @@
         <div class="meta">
           <div class="num">Day ${i + 1}・${md(d.date)}（${d.wd}）</div>
           <h3>${esc(d.title)}</h3>
-          <div class="chips"><span class="chip" style="background:${a.bg}">${a.name}</span><span class="chip" style="background:${FAM.kevin.c}">${esc(d.who)}</span></div>
+          <div class="chips"><span class="chip" style="background:${a.bg}">${a.name}</span>${famChips}</div>
         </div>
       </div>
       <ol class="timeline">${items}</ol>
